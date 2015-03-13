@@ -1,0 +1,12 @@
+matlab-epr -- functions for handling EPR data 
+
+Copyright (c) 2015, Till Biskup
+Copyright (c) 2015, Deborah Meyer
+All rights reserved.
+
+For detailed licensing information see the file "COPYING" in the same directory.
+
+PURPOSE:
+
+Importing, analysing, plotting and exporting EPR data
+
