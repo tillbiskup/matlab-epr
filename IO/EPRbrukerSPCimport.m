@@ -1,9 +1,9 @@
-function [data,warnings] = EPRbrukerSPCread(filename)
-% EPRBRUKERSPCREAD Read Bruker SPC file format.
+function [data,warnings] = EPRbrukerSPCimport(filename)
+% EPRBRUKERSPCIMPORT Read Bruker SPC file format.
 %
 % Usage
-%   data = EPRbrukerSPCread(filename)
-%   [data,warning] = EPRbrukerSPCread(filename)
+%   data = EPRbrukerSPCimport(filename)
+%   [data,warning] = EPRbrukerSPCimport(filename)
 %
 %   filename - string
 %              name of a valid filename (of a Bruker SPC file)
@@ -15,9 +15,11 @@ function [data,warnings] = EPRbrukerSPCread(filename)
 %
 % If no data could be loaded, data is an empty struct.
 % In such case, warning may hold some further information what happened.
+%
+% % SEE ALSO: EPRbrukerBES3Timport
 
 % Copyright (c) 2011-15, Till Biskup
-% 2015-03-27
+% 2015-03-28
 
 % Assign default output
 data = [];

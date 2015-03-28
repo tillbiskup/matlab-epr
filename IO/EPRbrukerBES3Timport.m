@@ -1,9 +1,9 @@
-function [data,warnings] = EPRbrukerBES3Tread(filename)
-% EPRBRUKERBES3TREAD Read Bruker BES3T file format.
+function [data,warnings] = EPRbrukerBES3Timport(filename)
+% EPRBRUKERBES3TIMPORT Read Bruker BES3T file format.
 %
 % Usage
-%   data = EPRbrukerBES3Tread(filename)
-%   [data,warning] = EPRbrukerBES3Tread(filename)
+%   data = EPRbrukerBES3Timport(filename)
+%   [data,warning] = EPRbrukerBES3Timport(filename)
 %
 %   filename - string
 %              name of a valid filename (of a Bruker BES3T file)
@@ -15,9 +15,11 @@ function [data,warnings] = EPRbrukerBES3Tread(filename)
 %
 % If no data could be loaded, data is an empty struct.
 % In such case, warning may hold some further information what happened.
+%
+% SEE ALSO: EPRbrukerSPCimport
 
 % Copyright (c) 2011-15, Till Biskup
-% 2015-03-27
+% 2015-03-28
 
 % Assign default output
 data = [];
