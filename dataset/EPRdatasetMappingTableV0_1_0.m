@@ -1,9 +1,9 @@
-function table = EPRdatasetMappingTable
-% EPRDATASETMAPPINGTABLE Mapping table for mapping info file contents to
-% dataset.
+function table = EPRdatasetMappingTableV0_1_0
+% EPRDATASETMAPPINGTABLEV0_1_0 Mapping table for mapping EPR info file (v.
+% 0.1.0) contents to dataset.
 %
 % Usage
-%   table = EPRdatasetMappingTable
+%   table = EPRdatasetMappingTableV0_1_0
 %
 %   table - cell (nx3)
 %           1st column: field of info structure returned by
@@ -28,9 +28,10 @@ function table = EPRdatasetMappingTable
 % SEE ALSO: EPRdatasetMapInfo, EPRdatasetCreate, EPRinfofileLoad,
 
 % Copyright (c) 2014-15, Till Biskup
-% 2015-03-27
+% Copyright (c) 2015, Deborah Meyer
+% 2015-04-09
 
-commonTable = commonDatasetMappingTable;
+commonTable = commonDatasetMappingTableV0_1_0;
 
 table = {...
     'sample.tube','sample.tube',''; ...
@@ -66,7 +67,6 @@ table = {...
     'fieldCalibration.standard','parameters.field.calibration.standard',''; ...
     'fieldCalibration.signalField','parameters.field.calibration.signalField','splitValueUnit'; ...
     'fieldCalibration.MWfrequency','parameters.field.calibration.MWfrequency','splitValueUnit'; ...
-    'comment','comment','' ...
     };
 
 % Join mapping tables from common and EPR datasets
