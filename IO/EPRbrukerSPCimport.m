@@ -3,7 +3,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename)
 %
 % Usage
 %   data = EPRbrukerSPCimport(filename)
-%   [data,warning] = EPRbrukerSPCimport(filename)
+%   [data,params,warning] = EPRbrukerSPCimport(filename)
 %
 %   filename - string
 %              name of a valid filename (of a Bruker SPC file)
@@ -19,7 +19,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename)
 % % SEE ALSO: EPRbrukerBES3Timport
 
 % Copyright (c) 2011-15, Till Biskup
-% 2015-03-28
+% 2015-11-03
 
 % Assign default output
 data = [];
@@ -40,14 +40,22 @@ end
 
 % Read Bruker ESP/WinEPR binary data
 [fpath,fname,~] = fileparts(filename);
+dscFilename = fullfile(fpath,[fname,'.par']);
 dtaFilename = fullfile(fpath,[fname,'.spc']);
+
+[params,fmt] = loadParamsFile(dscFilename);
+
 [fid,msg] = fopen(dtaFilename);
 % If fopen was successful, fid > 2, otherwise fid == -1
 if fid > 2
-    % Data are binary, big endian, single precision (Bruker ESP, not EMX)
-    %data.data = fread(fid,inf,'int32=>real*8',0,'b');
-    % For EMX, not ESP
-    data.data = fread(fid,inf,'float');
+    switch lower(fmt)
+        case 'esp'
+            % Data are binary, big endian, single precision (Bruker ESP) 
+            data.data = fread(fid,inf,'int32=>real*8',0,'b');
+        case 'emx'
+            % For EMX, not ESP
+            data.data = fread(fid,inf,'float');
+    end
     fclose(fid);
 else
     data = struct();
@@ -58,7 +66,31 @@ else
     return;
 end
 
+data.params = params;
+
 end 
 
 % For multiple spectra in one file (EMX, power sweep)
 % data.data = reshape(data.data,[],numberOfSpectra);
+
+function [params,fmt] = loadParamsFile(dscFilename)
+
+fileContent = fileread(dscFilename);
+% Determine file format: ESP (UNIX style) or EMX (DOS style)
+if any(strfind(fileContent,sprintf('\r')))
+    fmt = 'emx';
+    fileContent = regexp(fileContent,'\r','split');
+else
+    fmt = 'esp';
+    fileContent = regexp(fileContent,'\n','split');
+end
+
+% Remove empty lines
+fileContent(cellfun(@isempty,fileContent)) = [];
+
+[fields,values] = strtok(fileContent,' ');
+for field=1:length(fields)
+    params.(fields{field}) = strtrim(values{field});
+end
+
+end
