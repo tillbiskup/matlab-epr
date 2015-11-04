@@ -1,2 +1,2 @@
 % EPR Toolbox
-% Version 0.0.5 03-Nov-2015
+% Version 0.0.6 04-Nov-2015
