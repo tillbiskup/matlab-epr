@@ -61,7 +61,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename)
 % SEE ALSO: EPRbrukerBES3Timport
 
 % Copyright (c) 2011-15, Till Biskup
-% 2015-11-04
+% 2015-11-11
 
 % Assign default output
 data = [];
@@ -275,7 +275,7 @@ if isfield(params,'XYUN')
     axes(2).unit = params.XYUN;
 end
 
-if strcmpi(params.JEY,'mw-power-sweep')
+if isfield(params,'JEY') && strcmpi(params.JEY,'mw-power-sweep')
     if all(isfield(params,{'MP','MPS','XYWI'}))
         axes(2).values = ...
             linspace(mW2dB(params.MP),...
