@@ -1,0 +1,105 @@
+function dataset = EPRimport(filename,varargin)
+% EPRIMPORT Read EPR data from different file types and return dataset
+% complying to EPR toolbox dataset structure.
+%
+% Usage
+%   dataset = EPRimport(filename)
+%
+%   filename - string
+%              name of a valid filename 
+%
+%   dataset  - struct
+%              structure containing data and additional fields
+%              Complying to EPR toolbox dataset structure
+%
+% NOTE: Currently (2015-11-17), this function has not been checked properly
+%       with other than Bruker PAR/SPC data (from EMX/ESP respectively). 
+%       Once this has been done, remove this note.
+%
+% See also: EPRbrukerSPCimport, EPRbrukerBES3Timport, EPRdatasetCreate
+
+% Copyright (c) 2015, Till Biskup
+% 2015-11-17
+
+% Create dataset
+dataset = EPRdatasetCreate();
+
+try
+    % Parse input arguments using the inputParser functionality
+    p = inputParser;            % Create inputParser instance.
+    p.FunctionName = mfilename; % Include function name in error messages
+    p.KeepUnmatched = true;     % Enable errors on unmatched arguments
+    p.StructExpand = true;      % Enable passing arguments in a structure
+    p.addRequired('filename', @(x)ischar(x));
+    p.addParamValue('loadInfo',true,@islogical);
+    p.parse(filename,varargin{:});
+catch exception
+    disp(['(EE) ' exception.message]);
+    return;
+end
+
+% Remove extension from filename if any
+[path,name,ext] = fileparts(filename);
+filename = fullfile(path,name);
+
+fileFormat = '';
+% If there was an extension, try to guess file format, otherwise try to
+% find respective files and guess this way.
+if ~isempty(ext)
+    switch lower(ext)
+        case {'par','spc'}
+            fileFormat = 'BrukerSPC';
+        case {'dsc','dta'}
+            fileFormat = 'BrukerBES3T';
+    end
+else
+    if exist(fullfile(path,[name '.par']),'file')
+        fileFormat = 'BrukerSPC';
+    elseif exist(fullfile(path,[name '.DSC']),'file')
+            fileFormat = 'BrukerBES3T';
+    end
+end
+
+% Try to load file
+switch fileFormat
+    case 'BrukerSPC'
+        rawData = EPRbrukerSPCimport(filename);
+    case 'BrukerBES3T'
+        rawData = EPRbrukerBES3Timport(filename);
+    otherwise
+        % Try to load file assuming bare ASCII data with two columns,
+        % axis in first column and intensity values in second column
+        try
+            extensions = {'.txt','.dat'};
+            for extension = 1:length(extensions)
+                fullfilename = [filename extensions{extension}];
+                if exist(fullfilename,'file')
+                    tmpData = load(fullfilename);
+                    rawData.axes(1).values = tmpData(:,1)';
+                    rawData.data = tmpData(:,2);
+                    break;
+                end
+            end
+        catch
+            warning('Unknown file format. Nothing loaded!');
+            return;
+        end
+end
+
+% Try to convert field axis: G -> mT
+if isfield(rawData.axes(1),'unit') && strcmpi(rawData.axes(1).unit,'g')
+    rawData.axes(1).values = rawData.axes(1).values / 10;
+    rawData.axes(1).unit = 'mT';
+end
+
+% Assign a minimum of fields in the dataset
+dataset.data = rawData.data;
+for axis = 1:length(rawData.axes)
+    dataset.axes.data(axis) = ...
+        commonStructCopy(dataset.axes.data(axis),rawData.axes(axis));
+end
+dataset.axes.data(end).measure = 'intensity';
+
+% Fill origdata fields
+dataset.origdata = dataset.data;
+dataset.axes.origdata = dataset.axes.data;

@@ -3,7 +3,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename)
 %
 % Usage
 %   data = EPRbrukerSPCimport(filename)
-%   [data,params,warning] = EPRbrukerSPCimport(filename)
+%   [data,warnings] = EPRbrukerSPCimport(filename)
 %
 %   filename - string
 %              name of a valid filename (of a Bruker SPC file)
@@ -61,7 +61,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename)
 % SEE ALSO: EPRbrukerBES3Timport
 
 % Copyright (c) 2011-15, Till Biskup
-% 2015-11-11
+% 2015-11-17
 
 % Assign default output
 data = [];
@@ -262,6 +262,10 @@ end
 axes(1).values = ...
     linspace(params.GST,params.GST+params.GSI,params.RES)';
 
+if strcmpi(params.JEX,'field-sweep')
+    axes(1).measure = 'magnetic field';
+end
+
 % WARNING: Bruker EMX files containing 2D data (e.g. power sweep) seem not
 % to comply to Bruker file format spec
 if isfield(params,'XXUN')
@@ -275,12 +279,18 @@ if isfield(params,'XYUN')
     axes(2).unit = params.XYUN;
 end
 
-if isfield(params,'JEY') && strcmpi(params.JEY,'mw-power-sweep')
-    if all(isfield(params,{'MP','MPS','XYWI'}))
-        axes(2).values = ...
-            linspace(mW2dB(params.MP),...
-            mW2dB(params.MP)+params.XYWI*params.MPS,...
-            params.XYWI+1);
+if isfield(params,'JEY')
+    switch lower(params.JEY)
+        case 'mw-power-sweep'
+            if all(isfield(params,{'MP','MPS','XYWI'}))
+                axes(2).values = ...
+                    linspace(mW2dB(params.MP),...
+                    mW2dB(params.MP)+params.XYWI*params.MPS,...
+                    params.XYWI+1);
+            end
+            axes(2).measure = 'MW attenuation';
+        case 'inc-sweep'
+            axes(2).measure = 'time';
     end
 end
 
