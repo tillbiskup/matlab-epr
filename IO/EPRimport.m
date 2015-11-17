@@ -12,6 +12,17 @@ function dataset = EPRimport(filename,varargin)
 %              structure containing data and additional fields
 %              Complying to EPR toolbox dataset structure
 %
+% Optional parameters
+%
+%   RCnorm   - boolean
+%              Normalise for receiver gain (RC), aka divide intensities of
+%              spectrum by RC value.
+%              Default: false
+%
+%   SCnorm   - boolean
+%              Normalise for number of scans, aka divide by this number
+%              Default: false
+%
 % NOTE: Currently (2015-11-17), this function has not been checked properly
 %       with other than Bruker PAR/SPC data (from EMX/ESP respectively). 
 %       Once this has been done, remove this note.
@@ -33,6 +44,7 @@ try
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
     p.addParamValue('RCnorm',false,@islogical);
+    p.addParamValue('SCnorm',false,@islogical);
     p.parse(filename,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);

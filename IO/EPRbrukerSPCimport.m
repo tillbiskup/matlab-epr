@@ -4,6 +4,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename,varargin)
 % Usage
 %   data = EPRbrukerSPCimport(filename)
 %   [data,warnings] = EPRbrukerSPCimport(filename)
+%   [data,warnings] = EPRbrukerSPCimport(filename,<param>,<value>)
 %
 %   filename - string
 %              name of a valid filename (of a Bruker SPC file)
@@ -16,6 +17,17 @@ function [data,warnings] = EPRbrukerSPCimport(filename,varargin)
 %
 % If no data could be loaded, data is an empty struct.
 % In such case, warning may hold some further information what happened.
+%
+% Optional parameters
+%
+%   RCnorm   - boolean
+%              Normalise for receiver gain (RC), aka divide intensities of
+%              spectrum by RC value.
+%              Default: false
+%
+%   SCnorm   - boolean
+%              Normalise for number of scans, aka divide by this number
+%              Default: false
 %
 %
 % A few notes on the Bruker SPC file format: 
@@ -76,6 +88,7 @@ try
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
     p.addParamValue('RCnorm',false,@islogical);
+    p.addParamValue('SCnorm',false,@islogical);
     p.parse(filename,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);
@@ -104,9 +117,14 @@ end
 
 data.axes = createAxes(data.params);
 
-% Try to normalise for receiver gain (aka divide by its value)
+% Normalise for receiver gain (aka divide by its value)
 if p.Results.RCnorm
     data.data = data.data./data.params.RRG;
+end
+
+% Normalise for number of scans (aka divide by this number)
+if p.Results.SCnorm && data.params.JSD > 0
+    data.data = data.data./data.params.JSD;
 end
 
 end 
