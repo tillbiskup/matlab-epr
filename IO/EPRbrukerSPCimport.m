@@ -1,4 +1,4 @@
-function [data,warnings] = EPRbrukerSPCimport(filename)
+function [data,warnings] = EPRbrukerSPCimport(filename,varargin)
 % EPRBRUKERSPCIMPORT Read Bruker SPC file format.
 %
 % Usage
@@ -75,7 +75,8 @@ try
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
-    p.parse(filename);
+    p.addParamValue('RCnorm',false,@islogical);
+    p.parse(filename,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);
     return;
@@ -102,6 +103,11 @@ if data.params.RES < length(data.data)
 end
 
 data.axes = createAxes(data.params);
+
+% Try to normalise for receiver gain (aka divide by its value)
+if p.Results.RCnorm
+    data.data = data.data./data.params.RRG;
+end
 
 end 
 

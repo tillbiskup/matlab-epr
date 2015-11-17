@@ -32,7 +32,7 @@ try
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
-    p.addParamValue('loadInfo',true,@islogical);
+    p.addParamValue('RCnorm',false,@islogical);
     p.parse(filename,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);
@@ -64,7 +64,7 @@ end
 % Try to load file
 switch fileFormat
     case 'BrukerSPC'
-        rawData = EPRbrukerSPCimport(filename);
+        rawData = EPRbrukerSPCimport(filename,'RCnorm',p.Results.RCnorm);
     case 'BrukerBES3T'
         rawData = EPRbrukerBES3Timport(filename);
     otherwise
