@@ -61,6 +61,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename)
 % SEE ALSO: EPRbrukerBES3Timport
 
 % Copyright (c) 2011-15, Till Biskup
+% Copyright (c) 2015, Deborah Meyer
 % 2015-11-17
 
 % Assign default output
@@ -291,6 +292,10 @@ if isfield(params,'JEY')
             axes(2).measure = 'MW attenuation';
         case 'inc-sweep'
             axes(2).measure = 'time';
+            if isfield(params,'XYWI')
+                axes(2).values = 1:1:params.XYWI;
+                axes(2).unit = 'index';
+            end
     end
 end
 

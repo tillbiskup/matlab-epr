@@ -19,10 +19,11 @@ function dataset = EPRimport(filename,varargin)
 % See also: EPRbrukerSPCimport, EPRbrukerBES3Timport, EPRdatasetCreate
 
 % Copyright (c) 2015, Till Biskup
+% Copyright (c) 2015, Deborah Meyer
 % 2015-11-17
 
 % Create dataset
-dataset = EPRdatasetCreate();
+dataset = struct();
 
 try
     % Parse input arguments using the inputParser functionality
@@ -92,8 +93,11 @@ if isfield(rawData.axes(1),'unit') && strcmpi(rawData.axes(1).unit,'g')
     rawData.axes(1).unit = 'mT';
 end
 
+% Create dataset with correct number of axes
+dataset = EPRdatasetCreate('numberOfAxes',length(rawData.axes)+1);
+
 % Assign a minimum of fields in the dataset
-dataset.data = rawData.data;
+dataset.data = rawData.data';
 for axis = 1:length(rawData.axes)
     dataset.axes.data(axis) = ...
         commonStructCopy(dataset.axes.data(axis),rawData.axes(axis));
