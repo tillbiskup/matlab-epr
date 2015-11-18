@@ -14,14 +14,19 @@ function dataset = EPRimport(filename,varargin)
 %
 % Optional parameters
 %
-%   RCnorm   - boolean
-%              Normalise for receiver gain (RC), aka divide intensities of
-%              spectrum by RC value.
-%              Default: false
+%   RCnorm       - boolean
+%                  Normalise for receiver gain (RC), aka divide intensities
+%                  of spectrum by RC value.
+%                  Default: false
 %
-%   SCnorm   - boolean
-%              Normalise for number of scans, aka divide by this number
-%              Default: false
+%   SCnorm       - boolean
+%                  Normalise for number of scans, aka divide by this number
+%                  Default: false
+%
+%   vendorFields - boolean
+%                  Add vendor-specific parameters and format information to
+%                  dataset in structure "vendor"
+%                  Default: false
 %
 % NOTE: Currently (2015-11-17), this function has not been checked properly
 %       with other than Bruker PAR/SPC data (from EMX/ESP respectively). 
@@ -43,8 +48,9 @@ try
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
-    p.addParamValue('RCnorm',false,@islogical);
+    p.addParamValue('RGnorm',false,@islogical);
     p.addParamValue('SCnorm',false,@islogical);
+    p.addParamValue('vendorFields',false,@islogical);
     p.parse(filename,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);
@@ -76,7 +82,7 @@ end
 % Try to load file
 switch fileFormat
     case 'BrukerSPC'
-        rawData = EPRbrukerSPCimport(filename,'RCnorm',p.Results.RCnorm);
+        rawData = EPRbrukerSPCimport(filename,'RGnorm',p.Results.RGnorm);
     case 'BrukerBES3T'
         rawData = EPRbrukerBES3Timport(filename);
     otherwise
@@ -119,3 +125,13 @@ dataset.axes.data(end).measure = 'intensity';
 % Fill origdata fields
 dataset.origdata = dataset.data;
 dataset.axes.origdata = dataset.axes.data;
+
+% Add vendor fields if asked
+if p.Results.vendorFields
+    dataset.vendor.fileFormat = fileFormat;
+    if strcmp(fileFormat,'BrukerSPC')
+        dataset.vendor.parameters = rawData.params;
+    end
+end
+
+end

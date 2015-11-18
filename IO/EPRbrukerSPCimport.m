@@ -20,7 +20,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename,varargin)
 %
 % Optional parameters
 %
-%   RCnorm   - boolean
+%   RGnorm   - boolean
 %              Normalise for receiver gain (RC), aka divide intensities of
 %              spectrum by RC value.
 %              Default: false
@@ -74,7 +74,7 @@ function [data,warnings] = EPRbrukerSPCimport(filename,varargin)
 
 % Copyright (c) 2011-15, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2015-11-17
+% 2015-11-18
 
 % Assign default output
 data = [];
@@ -87,7 +87,7 @@ try
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
-    p.addParamValue('RCnorm',false,@islogical);
+    p.addParamValue('RGnorm',false,@islogical);
     p.addParamValue('SCnorm',false,@islogical);
     p.parse(filename,varargin{:});
 catch exception
@@ -118,7 +118,7 @@ end
 data.axes = createAxes(data.params);
 
 % Normalise for receiver gain (aka divide by its value)
-if p.Results.RCnorm
+if p.Results.RGnorm
     data.data = data.data./data.params.RRG;
 end
 

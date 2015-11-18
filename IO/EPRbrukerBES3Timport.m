@@ -19,7 +19,7 @@ function [data,warnings] = EPRbrukerBES3Timport(filename)
 % SEE ALSO: EPRbrukerSPCimport
 
 % Copyright (c) 2011-15, Till Biskup
-% 2015-03-28
+% 2015-11-18
 
 % Assign default output
 data = [];
@@ -286,10 +286,12 @@ try
     % Assign values according to cell array above. Therefore, make use of
     % the two internal functions setCascadedField and getCascadedField.
     for k=1:length(parameterMatching)
-        data = setCascadedField(...
-            data,...
-            parameterMatching{k,2},...
-            getCascadedField(parameters,parameterMatching{k,1}));
+        if isfield(parameters,parameterMatching{k,1})
+            data = setCascadedField(...
+                data,...
+                parameterMatching{k,2},...
+                getCascadedField(parameters,parameterMatching{k,1}));
+        end
     end
     % Assign manually a few parameters that cannot easily assigned above
     data.parameters.runs = 1;
