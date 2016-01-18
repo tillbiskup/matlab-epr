@@ -27,8 +27,8 @@ function dataset = EPRdatasetCreate(varargin)
 %
 % SEE ALSO: commonDatasetCreate, commonHistoryCreate, EPRhistoryCreate
 
-% Copyright (c) 2015, Till Biskup
-% 2015-03-27
+% Copyright (c) 2015-16, Till Biskup
+% 2016-01-18
 
 % Assign output parameter
 dataset = struct();
@@ -135,7 +135,7 @@ dataset.parameters = struct(...
 % Join common and EPR dataset structure
 dataset = commonStructCopy(dataset,commonDataset);
 
-dataset.format = struct(...
+dataset.format(end+1) = struct(...
     'type','EPR dataset',...
     'version',structureVersion ...
     );
