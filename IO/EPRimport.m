@@ -34,9 +34,9 @@ function dataset = EPRimport(filename,varargin)
 %
 % See also: EPRbrukerSPCimport, EPRbrukerBES3Timport, EPRdatasetCreate
 
-% Copyright (c) 2015, Till Biskup
+% Copyright (c) 2015-2016, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2015-11-17
+% 2016-11-17
 
 % Create dataset
 dataset = struct();
@@ -125,6 +125,10 @@ dataset.axes.data(end).measure = 'intensity';
 % Fill origdata fields
 dataset.origdata = dataset.data;
 dataset.axes.origdata = dataset.axes.data;
+
+% Add file info
+dataset.file.name = filename;
+dataset.file.format = fileFormat;
 
 % Add vendor fields if asked
 if p.Results.vendorFields
