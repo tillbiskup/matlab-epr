@@ -34,9 +34,9 @@ function dataset = EPRimport(filename,varargin)
 %
 % See also: EPRbrukerSPCimport, EPRbrukerBES3Timport, EPRdatasetCreate
 
-% Copyright (c) 2015-2016, Till Biskup
+% Copyright (c) 2015-2017, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2016-11-17
+% 2017-06-20
 
 % Create dataset
 dataset = struct();
@@ -64,8 +64,8 @@ filename = fullfile(path,name);
 fileFormat = '';
 % If there was an extension, try to guess file format, otherwise try to
 % find respective files and guess this way.
-if ~isempty(ext)
-    switch lower(ext)
+if ~isempty(ext(2:end))
+    switch lower(ext(2:end))
         case {'par','spc'}
             fileFormat = 'BrukerSPC';
         case {'dsc','dta'}
@@ -118,7 +118,7 @@ dataset = EPRdatasetCreate('numberOfAxes',length(rawData.axes)+1);
 dataset.data = rawData.data';
 for axis = 1:length(rawData.axes)
     dataset.axes.data(axis) = ...
-        commonStructCopy(dataset.axes.data(axis),rawData.axes(axis));
+        commonStructCopy(dataset.axes.data(axis),rawData.axes.data(axis));
 end
 dataset.axes.data(end).measure = 'intensity';
 
