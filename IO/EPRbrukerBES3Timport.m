@@ -19,7 +19,7 @@ function [data,warnings] = EPRbrukerBES3Timport(filename)
 % SEE ALSO: EPRbrukerSPCimport
 
 % Copyright (c) 2011-17, Till Biskup
-% 2017-06-20
+% 2017-07-01
 
 % Assign default output
 data = [];
@@ -185,7 +185,7 @@ try
     data.axes.data(1).values = linspace(...
         parameters.XMIN,...
         parameters.XMIN+parameters.XWID,...
-        parameters.XPTS);
+        parameters.XPTS)';
     if isfield(parameters,'YMIN')
         data.axes.data(2).values = linspace(...
             parameters.YMIN,...

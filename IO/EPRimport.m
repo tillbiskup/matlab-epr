@@ -36,7 +36,7 @@ function dataset = EPRimport(filename,varargin)
 
 % Copyright (c) 2015-2017, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2017-06-20
+% 2017-06-21
 
 % Create dataset
 dataset = struct();
@@ -106,9 +106,9 @@ switch fileFormat
 end
 
 % Try to convert field axis: G -> mT
-if isfield(rawData.axes(1),'unit') && strcmpi(rawData.axes(1).unit,'g')
-    rawData.axes(1).values = rawData.axes(1).values / 10;
-    rawData.axes(1).unit = 'mT';
+if isfield(rawData.axes.data(1),'unit') && strcmpi(rawData.axes.data(1).unit,'g')
+    rawData.axes.data(1).values = rawData.axes.data(1).values / 10;
+    rawData.axes.data(1).unit = 'mT';
 end
 
 % Create dataset with correct number of axes
