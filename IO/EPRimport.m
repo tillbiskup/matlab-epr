@@ -36,7 +36,7 @@ function dataset = EPRimport(filename,varargin)
 
 % Copyright (c) 2015-2017, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2017-06-21
+% 2017-08-14
 
 % Create dataset
 dataset = struct();
@@ -116,7 +116,7 @@ dataset = EPRdatasetCreate('numberOfAxes',length(rawData.axes)+1);
 
 % Assign a minimum of fields in the dataset
 dataset.data = rawData.data';
-for axis = 1:length(rawData.axes)
+for axis = 1:length(rawData.axes.data)
     dataset.axes.data(axis) = ...
         commonStructCopy(dataset.axes.data(axis),rawData.axes.data(axis));
 end

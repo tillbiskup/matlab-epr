@@ -72,9 +72,9 @@ function [data,warnings] = EPRbrukerSPCimport(filename,varargin)
 %
 % SEE ALSO: EPRbrukerBES3Timport
 
-% Copyright (c) 2011-15, Till Biskup
+% Copyright (c) 2011-17, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2015-11-18
+% 2017-08-14
 
 % Assign default output
 data = [];
@@ -115,7 +115,7 @@ if data.params.RES < length(data.data)
     data.data = reshape(data.data,data.params.RES,[]);
 end
 
-data.axes = createAxes(data.params);
+data.axes.data = createAxes(data.params);
 
 % Normalise for receiver gain (aka divide by its value)
 if p.Results.RGnorm
