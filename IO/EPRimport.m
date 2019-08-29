@@ -34,9 +34,9 @@ function dataset = EPRimport(filename,varargin)
 %
 % See also: EPRbrukerSPCimport, EPRbrukerBES3Timport, EPRdatasetCreate
 
-% Copyright (c) 2015-2017, Till Biskup
+% Copyright (c) 2015-2019, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2017-08-14
+% 2019-08-29
 
 % Create dataset
 dataset = struct();
@@ -70,12 +70,16 @@ if ~isempty(ext(2:end))
             fileFormat = 'BrukerSPC';
         case {'dsc','dta'}
             fileFormat = 'BrukerBES3T';
+        case {'xml'}
+            fileFormat = 'MagnettechXML';
     end
 else
     if exist(fullfile(path,[name '.par']),'file')
         fileFormat = 'BrukerSPC';
     elseif exist(fullfile(path,[name '.DSC']),'file')
             fileFormat = 'BrukerBES3T';
+    elseif exist(fullfile(path,[name '.xml']),'file')
+            fileFormat = 'MagnettechXML';
     end
 end
 
@@ -85,6 +89,8 @@ switch fileFormat
         rawData = EPRbrukerSPCimport(filename,'RGnorm',p.Results.RGnorm);
     case 'BrukerBES3T'
         rawData = EPRbrukerBES3Timport(filename);
+    case 'MagnettechXML'
+        rawData = EPRMagnettechImport([filename '.xml']);
     otherwise
         % Try to load file assuming bare ASCII data with two columns,
         % axis in first column and intensity values in second column
