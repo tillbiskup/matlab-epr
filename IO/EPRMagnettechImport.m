@@ -34,7 +34,7 @@ data = EPRdatasetCreate();
 
 [b0,int,param] = eprload(filename);
 
-data.data = int;
+data.data = int';
 data.axes.data(1).values = b0;
 
 data.file.name = filename;
@@ -81,11 +81,11 @@ data.parameters.date = ...
     datestr(datenum(parameters.Timestamp,'yyyy-mm-ddTHH:MM:SS'),31);
 
 if data.axes.data(1).measure == "BField"
-    data.axes.data(1).measure = "magnetic field";
+    data.axes.data(1).measure = 'magnetic field';
 end
 
 if data.axes.data(2).measure == "MW_Absorption"
-    data.axes.data(2).measure = "intensity";
+    data.axes.data(2).measure = 'intensity';
 end
 
 end
