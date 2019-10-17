@@ -36,7 +36,7 @@ function dataset = EPRimport(filename,varargin)
 
 % Copyright (c) 2015-2019, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2019-08-29
+% 2019-10-17
 
 % Create dataset
 dataset = struct();
@@ -135,6 +135,11 @@ dataset.axes.origdata = dataset.axes.data;
 % Add file info
 dataset.file.name = filename;
 dataset.file.format = fileFormat;
+
+% Add parameters in case of MagnettechXML
+if strcmp(fileFormat,'MagnettechXML')
+    dataset.parameters = rawData.parameters;
+end
 
 % Add vendor fields if asked
 if p.Results.vendorFields
