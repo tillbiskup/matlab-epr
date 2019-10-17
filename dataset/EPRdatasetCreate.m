@@ -39,8 +39,8 @@ try
     p.FunctionName = mfilename; % Include function name in error messages
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
-    p.addParamValue('numberOfAxes',2,@isscalar);
-    p.addParamValue('hasOptionalFields',false,@islogical);
+    p.addParameter('numberOfAxes',2,@isscalar);
+    p.addParameter('hasOptionalFields',false,@islogical);
     p.parse(varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);

@@ -48,9 +48,9 @@ try
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('filename', @(x)ischar(x));
-    p.addParamValue('RGnorm',false,@islogical);
-    p.addParamValue('SCnorm',false,@islogical);
-    p.addParamValue('vendorFields',false,@islogical);
+    p.addParameter('RGnorm',false,@islogical);
+    p.addParameter('SCnorm',false,@islogical);
+    p.addParameter('vendorFields',false,@islogical);
     p.parse(filename,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);

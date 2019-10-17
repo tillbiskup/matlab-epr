@@ -36,7 +36,7 @@ try
     p.KeepUnmatched = true;     % Enable errors on unmatched arguments
     p.StructExpand = true;      % Enable passing arguments in a structure
     p.addRequired('pmW', @(x)isnumeric(x) && isvector(x));
-    p.addParamValue('pmax',200,@isscalar);
+    p.addParameter('pmax',200,@isscalar);
     p.parse(pmW,varargin{:});
 catch exception
     disp(['(EE) ' exception.message]);
