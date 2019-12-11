@@ -23,7 +23,7 @@ function [data, warnings] = EPRMagnettechImport(filename)
 % SEE ALSO: EPRimport, EPRbrukerBES3Timport, EPRbrukerSPCimport
 
 % Copyright (c) 2019, Till Biskup
-% 2019-10-17
+% 2019-12-11
 
 % Assign default output
 data = [];
@@ -78,8 +78,8 @@ end
 
 % Assign manually a few parameters that cannot easily assigned above
 data.parameters.runs = 1;
-data.parameters.date = ...
-    datestr(datenum(parameters.Timestamp,'yyyy-mm-ddTHH:MM:SS'),31);
+%data.parameters.date = ...
+%    datestr(datenum(parameters.Timestamp,'yyyy-mm-ddTHH:MM:SS'),31);
 
 if data.axes.data(1).measure == "BField"
     data.axes.data(1).measure = 'magnetic field';
