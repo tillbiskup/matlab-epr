@@ -34,9 +34,9 @@ function dataset = EPRimport(filename,varargin)
 %
 % See also: EPRbrukerSPCimport, EPRbrukerBES3Timport, EPRdatasetCreate
 
-% Copyright (c) 2015-2019, Till Biskup
+% Copyright (c) 2015-2020, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2019-10-17
+% 2020-02-13
 
 % Create dataset
 dataset = struct();
@@ -77,20 +77,20 @@ else
     if exist(fullfile(path,[name '.par']),'file')
         fileFormat = 'BrukerSPC';
     elseif exist(fullfile(path,[name '.DSC']),'file')
-            fileFormat = 'BrukerBES3T';
+        fileFormat = 'BrukerBES3T';
     elseif exist(fullfile(path,[name '.xml']),'file')
-            fileFormat = 'MagnettechXML';
+        fileFormat = 'MagnettechXML';
     end
 end
 
 % Try to load file
 switch fileFormat
     case 'BrukerSPC'
-        rawData = EPRbrukerSPCimport(filename,'RGnorm',p.Results.RGnorm);
+        [rawData, warnings] = EPRbrukerSPCimport(filename,'RGnorm',p.Results.RGnorm);
     case 'BrukerBES3T'
-        rawData = EPRbrukerBES3Timport(filename);
+        [rawData, warnings] = EPRbrukerBES3Timport(filename);
     case 'MagnettechXML'
-        rawData = EPRMagnettechImport([filename '.xml']);
+        [rawData, warnings] = EPRMagnettechImport([filename '.xml']);
     otherwise
         % Try to load file assuming bare ASCII data with two columns,
         % axis in first column and intensity values in second column
@@ -111,6 +111,11 @@ switch fileFormat
         end
 end
 
+if ~exist('rawData', 'var')
+    warning('Problem loading file. Nothing loaded!');
+    return;
+end
+
 % Try to convert field axis: G -> mT
 if isfield(rawData.axes.data(1),'unit') && strcmpi(rawData.axes.data(1).unit,'g')
     rawData.axes.data(1).values = rawData.axes.data(1).values / 10;
@@ -118,7 +123,7 @@ if isfield(rawData.axes.data(1),'unit') && strcmpi(rawData.axes.data(1).unit,'g'
 end
 
 % Create dataset with correct number of axes
-dataset = EPRdatasetCreate('numberOfAxes',length(rawData.axes)+1);
+dataset = EPRdatasetCreate('numberOfAxes',length(rawData.axes.data)+1);
 
 % Assign a minimum of fields in the dataset
 dataset.data = rawData.data';
