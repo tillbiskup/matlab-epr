@@ -23,7 +23,7 @@ function [data, warnings] = EPRMagnettechImport(filename)
 % SEE ALSO: EPRimport, EPRbrukerBES3Timport, EPRbrukerSPCimport
 
 % Copyright (c) 2019, Till Biskup
-% 2019-12-11
+% 2019-12-12
 
 % Assign default output
 data = [];
@@ -88,5 +88,7 @@ end
 if data.axes.data(2).measure == "MW_Absorption"
     data.axes.data(2).measure = 'intensity';
 end
+
+data.parameters.bridge.MWfrequency.unit = "GHz";
 
 end
