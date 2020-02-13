@@ -332,6 +332,13 @@ try
         datenum([parameters.DATE ' ' parameters.TIME],...
         'dd/mm/yy HH:MM:SS'),...
         31);
+    
+    % Flip y axis of 2D datasets in case of decreasing axis values
+    if size(data.data, 2) > 1 ...
+            &&  diff(data.axes.data(2).values([1, end])) < 0
+         data.data = flipud(data.data);
+         data.axes.data(2).values = flipud(data.axes.data(2).values);
+    end
 catch exception
     throw(exception);
 end
