@@ -36,7 +36,7 @@ function dataset = EPRimport(filename,varargin)
 
 % Copyright (c) 2015-2020, Till Biskup
 % Copyright (c) 2015, Deborah Meyer
-% 2020-02-13
+% 2020-02-24
 
 % Create dataset
 dataset = struct();
@@ -132,6 +132,10 @@ for axis = 1:length(rawData.axes.data)
         commonStructCopy(dataset.axes.data(axis),rawData.axes.data(axis));
 end
 dataset.axes.data(end).measure = 'intensity';
+
+if strcmpi(dataset.axes.data(1).measure, 'field')
+    dataset.axes.data(1).measure = 'magnetic field';
+end
 
 % Fill origdata fields
 dataset.origdata = dataset.data;
