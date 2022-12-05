@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+title: EPR toolbox
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Till
+    family-names: Biskup
+    orcid: 'https://orcid.org/0000-0003-2913-0004'
+  - given-names: Deborah
+    family-names: Meyer
+repository-code: 'https://github.com/tillbiskup/matlab-cwepr'
+url: 'https://www.cwepr.de/'
+abstract: >-
+  A MATLAB(r) toolbox for importing, preprocessing, display, analysis, and postprocessing of electron spin resonance (EPR) spectroscopy data. This toolbox implements methods of general interest for EPR spectroscopy and is used, inter alia, by the cwEPR toolbox.
+keywords:
+  - "electron paramagnetic resonance spectroscopy"
+  - "spectroscopy"
+  - "spectroscopy"
+  - "magnetic resonance"
+  - "data processing and analysis"
+  - "reproducible science"
+  - "reproducible research"
+license: LGPL-3.0
+identifiers:
+  - description: "The concept DOI of the work."
+    type: doi
+    value: 10.5281/zenodo.xxxxxxx
