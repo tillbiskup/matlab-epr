@@ -1,6 +1,6 @@
 # EPR Toolbox
 
-[![DOI](zenodo.xxxxxxx.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
+[![DOI](zenodo.7401982.svg)](https://doi.org/10.5281/zenodo.7401982)
 
 A MATLAB(r) toolbox for preprocessing, display, analysis, and postprocessing of electron spin resonance (EPR) spectroscopy data.
 
@@ -32,9 +32,9 @@ Download the toolbox (usually as compressed archive), uncompress (if necessary),
 
 The EPR toolbox is free software. However, if you use it for your own research, please cite it accordingly:
 
-  * Till Biskup, Deborah Meyer. EPR toolbox (2022). [doi:10.5281/zenodo.xxxxxxx](https://doi.org/10.5281/zenodo.xxxxxxx)
+  * Till Biskup, Deborah Meyer. EPR toolbox (2022). [doi:10.5281/zenodo.7401982](https://doi.org/10.5281/zenodo.7401982)
 
-    [![DOI](zenodo.xxxxxxx.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
+    [![DOI](zenodo.7401982.svg)](https://doi.org/10.5281/zenodo.7401982)
 
 
 ## License
